@@ -15,10 +15,17 @@
 					  HelperText="Campo obrigatório"
 					  @bind-Value="InputModel.Description"
 					  For="@(() => InputModel.Description)"/>
-		<MudButton ButtonType="ButtonType.Submit"
-				   Variant="Variant.Filled"	
-				   Color="Color.Primary">
-			Salvar
-		</MudButton>
+		@if (IsBusy)
+		{
+			<MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+		}
+		else
+		{
+			<MudButton ButtonType="ButtonType.Submit"
+				Variant="Variant.Filled"	
+					   Color="Color.Primary">
+				Salvar
+			</MudButton>
+		}
 	</EditForm>
 </MudPaper>

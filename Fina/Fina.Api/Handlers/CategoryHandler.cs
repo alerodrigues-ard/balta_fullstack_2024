@@ -11,6 +11,9 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
 {
     public async Task<Response<Category?>> CreateAsync(CreateCategoryRequest request)
     {
+        // Delay para simular uma requisição lenta
+        await Task.Delay(5000);
+
         var category = new Category
         {
             UserId = request.UserId,

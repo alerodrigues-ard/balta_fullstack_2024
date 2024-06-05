@@ -23,6 +23,9 @@ public partial class GetAllCategoriesPage : ComponentBase
 	[Inject]
 	public ISnackbar Snackbar { get; set; } = null!;
 
+	[Inject]
+	public IDialogService Dialog { get; set; } = null!;
+
 	#endregion
 
 	#region Overrides
@@ -47,6 +50,48 @@ public partial class GetAllCategoriesPage : ComponentBase
 		}
 	}
 
+
+	#endregion
+
+	#region Methods
+
+	public async void OnDeleteButtonClickedAsync(long id, string title)
+	{
+		var result = await Dialog.ShowMessageBox(
+			"ATENÇÃO",
+			$"Ao prosseguir a categoria {title} será removida. Deseja continuar?",
+			yesText: "Excluir",
+			cancelText: "Cancelar");
+
+		if (result is true)
+			await OnDeleteAsync(id, title);
+
+		// Instrui o Blazor a atualizar a tela, caso a categoria tenha sido excluída
+		StateHasChanged();
+	}
+
+	public async Task OnDeleteAsync(long id, string title)
+	{
+		try
+		{
+			var request = new DeleteCategoryRequest
+			{
+				Id = id
+			};
+			await Handler.DeleteAsync(request);
+
+			// Remove da tela a categoria que foi excluída
+			Categories.RemoveAll(x => x.Id == id);
+
+			Snackbar.Add($"Categoria {title} removida", Severity.Info);
+
+
+		}
+		catch (Exception ex)
+		{
+			Snackbar.Add(ex.Message, Severity.Error);
+		}
+	}
 
 	#endregion
 

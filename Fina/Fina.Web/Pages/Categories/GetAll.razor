@@ -18,5 +18,13 @@
 	<Columns>
 		<PropertyColumn Property="x => x.Id" Title="#"/>
 		<PropertyColumn Property="x => x.Title" Title="Categoria"/>
+		<TemplateColumn Class="d-flex justify-end" Filterable="false">
+			<CellTemplate>
+				<MudIconButton
+					Icon="@Icons.Material.Filled.Delete"
+					Color="Color.Error"
+					OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Title)"/>
+			</CellTemplate>
+		</TemplateColumn>
 	</Columns>
 </MudDataGrid>
